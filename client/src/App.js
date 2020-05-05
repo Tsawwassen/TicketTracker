@@ -1,21 +1,33 @@
+//Dependencies 
 import React from 'react';
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 
-//Component Imports
+
+//Component
 import Home from './components/home/home.js';
 import Navigation from './components/navigation/navigation.js';
 import Stores from './components/stores/stores.js';
 
 
-//CSS Imports
+//CSS
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
-    <div className="App">
-      <Navigation />
-      <Home />
-    </div>
+    <Router>
+      <div className="App">
+        <Navigation />
+        <Switch>
+          <Route path="/stores">
+            <Stores />
+          </Route>
+          <Route path="/">
+            <Home />
+          </Route>
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
