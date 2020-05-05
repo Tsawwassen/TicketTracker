@@ -1,7 +1,10 @@
 # TicketTracker
 Ticket Tracker App
 
-#Tools
+# Goal
+Showcase my skills in wed development
+
+# Tools
 Node.js API Server
 MongoDB Database
 React Frontend
