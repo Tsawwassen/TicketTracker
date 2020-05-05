@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import {Navbar, Nav} from 'react-bootstrap';
 
-
-
 class Navigation extends Component {
 
   constructor(props){
