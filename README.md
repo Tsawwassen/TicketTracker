@@ -2,7 +2,7 @@
 Ticket Tracker App
 
 # Goal
-Showcase my skills in wed development
+Showcase my skills in web development
 
 # Tools
 Node.js API Server
