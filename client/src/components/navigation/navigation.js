@@ -16,8 +16,8 @@ class Navigation extends Component {
           <Navbar.Brand href="/">T.T.A.</Navbar.Brand>
           <Nav className="mr-auto">
             <Nav.Link href="/stores">Stores</Nav.Link>
-            <Nav.Link href="#">Parts</Nav.Link>
-            <Nav.Link href="#">Tickets</Nav.Link>
+            <Nav.Link href="/parts">Parts</Nav.Link>
+            <Nav.Link href="/tickets">Tickets</Nav.Link>
           </Nav>
         </Navbar>
       </div>

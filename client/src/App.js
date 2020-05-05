@@ -7,6 +7,8 @@ import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Home from './components/home/home.js';
 import Navigation from './components/navigation/navigation.js';
 import Stores from './components/stores/stores.js';
+import Tickets from './components/tickets/tickets.js';
+import Parts from './components/parts/parts.js';
 
 
 //CSS
@@ -21,6 +23,12 @@ function App() {
         <Switch>
           <Route path="/stores">
             <Stores />
+          </Route>
+           <Route path="/parts">
+            <Parts />
+          </Route>
+           <Route path="/tickets">
+            <Tickets />
           </Route>
           <Route path="/">
             <Home />
