@@ -2,68 +2,73 @@ import React, { Component } from 'react';
 
 class Parts extends Component {
 
-  constructor(props){
-    super(props);
-    this.state = {
-    	view: "default",
-    	selectedPart: {
-    		id:"",
-    		sku:"",
-    		name:"",
-    		desc:"",
-    	},
-    	newPart: {
-    		id:"",
-    		sku:"",
-    		name:"",
-    		desc:"",
-    	}
+  	constructor(props){
+	    super(props);
+	    this.state = {
+	    	view: "default",
+	    	selectedPart: {
+	    		id:"",
+	    		sku:"",
+	    		name:"",
+	    		desc:"",
+	    	},
+	    	newPart: {
+	    		id:"",
+	    		sku:"",
+	    		name:"",
+	    		desc:"",
+	    	}
 
-    };
+    	};
   
+		this.handleSelect = this.handleSelect.bind(this);
+		this.handleAdd = this.handleAdd.bind(this);
+		this.handleSKUChange = this.handleSKUChange.bind(this);
+		this.handleNameChange = this.handleNameChange.bind(this);
+		this.handleDescChange = this.handleDescChange.bind(this);
+	    this.handleAddPart = this.handleAddPart.bind(this);
+	    this.handleEditClick = this.handleEditClick.bind(this);
 
-    this.handleSelect = this.handleSelect.bind(this);
-    this.handleAdd = this.handleAdd.bind(this);
+  	}
 
-    this.handleSKUChange = this.handleSKUChange.bind(this);
-    this.handleNameChange = this.handleNameChange.bind(this);
-    this.handleDescChange = this.handleDescChange.bind(this);
+  	handleSelect(event){
+  		alert("part selected");
+  		event.preventDefault();
+  	}
 
-    this.handleAddPart = this.handleAddPart.bind(this);
+	handleAdd(event){
+	  	this.setState({view: "add"});
+	}
 
-    this.handleEditClick = this.handleEditClick.bind(this);
+  	handleAddPart(event){
+	  	this.setState({selectedPart: this.state.newPart});
+	  	this.setState({view: "select"});
+	  	// TODO : send new part to database to be added
+	  	event.preventDefault();
+  	}
 
-  }
+  	handleEditClick(event){
+  		alert("edit button clicked");
+  		event.preventDefault();
+  	}
 
-  handleSelect(event){
-  	alert("part selected");
-  	event.preventDefault();
-  }
+  	handleSKUChange(event){
+  	let partChange = this.state.newPart;
+  	partChange.sku = event.target.value;
+  	this.setState({newPart: partChange});
+   	}
 
-  handleAdd(event){
-  	this.setState({view: "add"});
-  }
-
-  handleAddPart(event){
-  	this.setState({selectedPart: this.state.newPart});
-  	this.setState({view: "select"});
-  	// TODO : send new part to database to be added
-  	event.preventDefault();
-  }
-  handleEditClick(event){
-  	alert("edit button clicked");
-  	event.preventDefault();
-  }
-
-  handleSKUChange(event){
-  	this.setState({newPart: {sku: event.target.value, name: this.state.newPart.name, desc: this.state.newPart.desc}});
-  }
     handleNameChange(event){
-  	this.setState({newPart: {sku: this.state.newPart.sku, name: event.target.value, desc: this.state.newPart.desc}});
-  }
+  	let partChange = this.state.newPart;
+  	partChange.name = event.target.value;
+  	this.setState({newPart: partChange});
+  	}
+
     handleDescChange(event){
-  	this.setState({newPart: {sku: this.state.newPart.sku, name: this.state.newPart.name, desc: event.target.value}});
-  }
+  	let partChange = this.state.newPart;
+  	partChange.desc = event.target.value;
+  	this.setState({newPart: partChange});
+  	}
 
   render () {
   	let page;
