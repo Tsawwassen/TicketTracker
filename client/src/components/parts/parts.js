@@ -13,7 +13,6 @@ class Parts extends Component {
 	    		desc:"",
 	    	},
 	    	newPart: {
-	    		id:"",
 	    		sku:"",
 	    		name:"",
 	    		desc:"",
@@ -41,10 +40,30 @@ class Parts extends Component {
 	}
 
   	handleAddPart(event){
-	  	this.setState({selectedPart: this.state.newPart});
-	  	this.setState({view: "select"});
-	  	// TODO : send new part to database to be added
-	  	event.preventDefault();
+
+  		let partToAdd = this.state.newPart
+
+  		const requestOptions = {
+      		method: 'POST',
+      		headers: { 'Content-Type': 'application/json' },
+      		body: JSON.stringify(partToAdd)
+    	};
+
+    	fetch('/part', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+        	if(data.reply !== 'error'){
+         		partToAdd.id = data.id
+	  			this.setState({selectedPart: partToAdd});
+	  			this.setState({view: "select"});
+         	}else {
+         		alert("Error adding the part to the database");
+
+         	}
+        });
+
+		event.preventDefault();
+	  	
   	}
 
   	handleEditClick(event){
@@ -111,7 +130,8 @@ class Parts extends Component {
   				<h1>Selected</h1>
   				<p>SKU : {this.state.selectedPart.sku}</p>
   				<p>Name : {this.state.selectedPart.name}</p>
-  				<p>Descriptoin : {this.state.selectedPart.desc}</p>
+  				<p>Description : {this.state.selectedPart.desc}</p>
+  				<p>ID : {this.state.selectedPart.id}</p>
   				<button onClick={this.handleEditClick}>Edit</button>
   			</div>);
   	}
