@@ -23,11 +23,11 @@ class Parts extends Component {
   
 		this.handleSelect = this.handleSelect.bind(this);
 		this.handleAdd = this.handleAdd.bind(this);
-		this.handleSKUChange = this.handleSKUChange.bind(this);
-		this.handleNameChange = this.handleNameChange.bind(this);
-		this.handleDescChange = this.handleDescChange.bind(this);
+
 	    this.handleAddPart = this.handleAddPart.bind(this);
 	    this.handleEditClick = this.handleEditClick.bind(this);
+
+	    this.handleChange = this.handleChange.bind(this);
 
   	}
 
@@ -52,22 +52,21 @@ class Parts extends Component {
   		event.preventDefault();
   	}
 
-  	handleSKUChange(event){
-  	let partChange = this.state.newPart;
-  	partChange.sku = event.target.value;
-  	this.setState({newPart: partChange});
-   	}
+  	handleChange(event){
+  		let partChange = this.state.newPart;
 
-    handleNameChange(event){
-  	let partChange = this.state.newPart;
-  	partChange.name = event.target.value;
-  	this.setState({newPart: partChange});
-  	}
-
-    handleDescChange(event){
-  	let partChange = this.state.newPart;
-  	partChange.desc = event.target.value;
-  	this.setState({newPart: partChange});
+  		switch(event.target.name){
+  			case "sku":
+  				partChange.sku = event.target.value; break;
+  			case "name":
+  				partChange.name = event.target.value; break;
+  			case "desc":
+  				partChange.desc = event.target.value; break;
+  			default:
+  				console.log("Error, form name is not defined"); break;
+  		}
+  		this.setState({newPart: partChange});
+  		console.log(this.state.newPart);
   	}
 
   render () {
@@ -93,15 +92,15 @@ class Parts extends Component {
   				<form  onSubmit={this.handleAddPart}>
   					<label>
 			          	SKU:
-			          	<input type="text" onChange={this.handleSKUChange}/>
+			          	<input type="text" name="sku" onChange={this.handleChange}/>
 			        </label>
 			        <label>
 			          	Name:
-			          	<input type="text" onChange={this.handleNameChange}/>
+			          	<input type="text" name="name" onChange={this.handleChange}/>
 			        </label>
 			        <label>
 			          	Description:
-			          	<input type="text" onChange={this.handleDescChange}/>
+			          	<input type="text" name="desc" onChange={this.handleChange}/>
 			        </label>
   					<input type="submit" value="Add Part" />
 		    	</form>
