@@ -35,33 +35,29 @@ class Parts extends Component {
   	componentDidMount(){
     	fetch('/parts')
       	.then(res => res.json())
-      	.then(parts => this.setState({partsList: parts}));
-      	//
-      	//
+      	.then(parts => this.setState({partsList: parts.data}));
   	}
 
   	selectedPartChange(event){
   		let activePart = this.state.selectedPart;
   		activePart.id = event.target.value;
-  		console.log(activePart);
   		this.setState({selectedPart: activePart});
   	}
 
   	handleSelect(event){
-  		//alert("part selected");
-  		//console.log(event.target.value);
-
-  		//Get part information from database
-  		//Set part info on selectedPart
-  		//Render select page
-
+  		fetch('/parts/' + this.state.selectedPart.id)
+      	.then(res => res.json())
+      	.then(part => {
+      		part.data.id = part.data._id;
+      		this.setState({selectedPart: part.data});
+      		this.setState({view: "select"});
+      	});
   		
   		event.preventDefault();
   	}
 
 	handleAdd(event){
 	  	this.setState({view: "add"});
-	  	//
 	}
 
   	handleAddPart(event){
@@ -77,7 +73,7 @@ class Parts extends Component {
     	fetch('/part', requestOptions)
         .then(response => response.json())
         .then(data => {
-        	if(data.reply !== 'error'){
+        	if(data.status !== 'error'){
          		partToAdd.id = data.id
 	  			this.setState({selectedPart: partToAdd});
 	  			this.setState({view: "select"});
