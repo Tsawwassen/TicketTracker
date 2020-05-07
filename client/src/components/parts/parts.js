@@ -17,6 +17,12 @@ class Parts extends Component {
 	    		name:"",
 	    		desc:"",
 	    	},
+	    	editPart: {
+	    		id: "",
+	    		sku:"",
+	    		name: "",
+	    		desc: ""
+	    	},
 	    	partsList: []
 
     	};
@@ -29,6 +35,9 @@ class Parts extends Component {
 
 	    this.handleChange = this.handleChange.bind(this);
 	    this.selectedPartChange = this.selectedPartChange.bind(this);
+
+	    this.handleEditPartSave = this.handleEditPartSave.bind(this);
+	    this.handleEditChange = this.handleEditChange.bind(this);
 
   	}
 
@@ -87,7 +96,32 @@ class Parts extends Component {
   	}
 
   	handleEditClick(event){
-  		alert("edit button clicked");
+  		
+  		this.setState({view: "edit"});
+  		this.setState({editPart: this.state.selectedPart});
+  		event.preventDefault();
+  	}
+
+  	handleEditPartSave(event){
+  		let partToUpdate = this.state.editPart;
+
+  		const requestOptions = {
+      		method: 'PUT',
+      		headers: { 'Content-Type': 'application/json' },
+      		body: JSON.stringify(partToUpdate)
+    	};
+
+    	fetch('/part', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+        	if(data.status !== 'error'){
+         		data.data.id = data.data._id
+         		this.setState({selectedPart: data.data});
+         		this.setState({view: "select"});
+         	}else {
+         		alert("Error updating the part to the database");
+         	}
+        });
   		event.preventDefault();
   	}
 
@@ -105,7 +139,23 @@ class Parts extends Component {
   				console.log("Error, form name is not defined"); break;
   		}
   		this.setState({newPart: partChange});
-  		console.log(this.state.newPart);
+ 
+  	}
+
+  	handleEditChange(event){
+  		let partChange = this.state.editPart;
+
+  		switch(event.target.name){
+  			case "sku":
+  				partChange.sku = event.target.value; break;
+  			case "name":
+  				partChange.name = event.target.value; break;
+  			case "desc":
+  				partChange.desc = event.target.value; break;
+  			default:
+  				console.log("Error, form name is not defined"); break;
+  		}
+  		this.setState({editPart: partChange});
   	}
 
   render () {
@@ -156,6 +206,27 @@ class Parts extends Component {
   				<p>Description : {this.state.selectedPart.desc}</p>
   				<p>ID : {this.state.selectedPart.id}</p>
   				<button onClick={this.handleEditClick}>Edit</button>
+  			</div>);
+  	} else if (this.state.view === "edit"){
+  		page = ( 
+  			<div>
+  				<h1>Edit</h1>
+  				<form  onSubmit={this.handleEditPartSave}>
+  					<label>
+			          	SKU:
+			          	<input type="text" name="sku" value={this.state.editPart.sku} onChange={this.handleEditChange}/>
+			        </label>
+			        <label>
+			          	Name:
+			          	<input type="text" name="name" value={this.state.editPart.name} onChange={this.handleEditChange}/>
+			        </label>
+			        <label>
+			          	Description:
+			          	<input type="text" name="desc" value={this.state.editPart.desc} onChange={this.handleEditChange}/>
+			        </label>
+  					<input type="submit" value="Edit Part" />
+		    	</form>
+
   			</div>);
   	}
     return (

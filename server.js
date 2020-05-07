@@ -56,5 +56,19 @@ app.post('/part', (req, res) => {
 	});
 });
 
+app.put('/part', (req, res) => {
+	delete req.body.id;
+
+	Parts.findByIdAndUpdate(req.body._id, req.body, {new: true})
+	.then(profile => {
+		res.json({status: "success", data: profile});
+	})
+	.catch(error => {
+		res.json({status: "error", data: error});
+	})
+	
+	//Parts.findByIdAndUpdate
+});
+
 const port = 5000;
 app.listen(port, () => console.log(`server started on ${port}`));
