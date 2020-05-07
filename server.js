@@ -14,7 +14,7 @@ var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/tta', {useNewUrlParser: true});
 
 //Models
-var Part = require('./models/Part');
+var Parts = require('./models/Part');
 
 
 app.get('/', (req, res) => {
@@ -22,8 +22,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/parts', (req, res) => {
-	console.log("log(req.query) " + JSON.stringify(req.query));
-	Part.find(req.query)
+	Parts.find(req.query)
 	.then(parts => {
 		res.json({data: parts});
 	})
