@@ -16,7 +16,8 @@ class Parts extends Component {
 	    		sku:"",
 	    		name:"",
 	    		desc:"",
-	    	}
+	    	},
+	    	partsList: []
 
     	};
   
@@ -27,16 +28,40 @@ class Parts extends Component {
 	    this.handleEditClick = this.handleEditClick.bind(this);
 
 	    this.handleChange = this.handleChange.bind(this);
+	    this.selectedPartChange = this.selectedPartChange.bind(this);
 
   	}
 
+  	componentDidMount(){
+    	fetch('/parts')
+      	.then(res => res.json())
+      	.then(parts => this.setState({partsList: parts}));
+      	//
+      	//
+  	}
+
+  	selectedPartChange(event){
+  		let activePart = this.state.selectedPart;
+  		activePart.id = event.target.value;
+  		console.log(activePart);
+  		this.setState({selectedPart: activePart});
+  	}
+
   	handleSelect(event){
-  		alert("part selected");
+  		//alert("part selected");
+  		//console.log(event.target.value);
+
+  		//Get part information from database
+  		//Set part info on selectedPart
+  		//Render select page
+
+  		
   		event.preventDefault();
   	}
 
 	handleAdd(event){
 	  	this.setState({view: "add"});
+	  	//
 	}
 
   	handleAddPart(event){
@@ -63,7 +88,6 @@ class Parts extends Component {
         });
 
 		event.preventDefault();
-	  	
   	}
 
   	handleEditClick(event){
@@ -96,8 +120,11 @@ class Parts extends Component {
 		    	<form onSubmit={this.handleSelect}>
 			    	<label>
 			    		Select a part to view
-			    		<select>
-			    			<option value="1">Option 1</option>
+			    		<select onChange={this.selectedPartChange}>
+			    			{this.state.partsList.map( part => 
+            					<option key={part._id} value={part._id}>{part.sku}</option>
+			    			)}
+			    			
 			    		</select>
 			    	</label>
 			    	<br />
