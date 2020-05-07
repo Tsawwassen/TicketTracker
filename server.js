@@ -22,7 +22,8 @@ app.get('/', (req, res) => {
 });
 
 app.get('/parts', (req, res) => {
-	Part.find()
+	console.log("log(req.query) " + JSON.stringify(req.query));
+	Part.find(req.query)
 	.then(parts => {
 		res.json({data: parts});
 	})
