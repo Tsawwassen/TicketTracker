@@ -9,6 +9,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 
+
 //Database
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/tta', {useNewUrlParser: true});
@@ -28,16 +29,31 @@ app.get('/parts', (req, res) => {
 	})
 	.catch(err => {
 		res.json({data: err});
-	})
+	});
 });
 
+app.get('/parts/:id', (req, res) => {
+	Parts.findById(req.params.id)
+	.then(part => {
+		//success
+		res.json({status: "success", data: part});
+	})
+	.catch(error => {
+		//error
+		res.json({status: "error"});
+	})
+})
+
+
 app.post('/part', (req, res) => {
-/*	db.parts.insert(req.body, (err, result) => {
-		if(err) res.json({reply: "error"});
-		else {
-			res.json({reply: "added", id: result._id});
-		}
-	});*/
+	Parts.create(req.body)
+	.then(parts => {
+		console.log(parts);
+		res.json({status: "success"});
+	})
+	.catch(error => {
+		res.json({status: "error"});
+	});
 });
 
 const port = 5000;
