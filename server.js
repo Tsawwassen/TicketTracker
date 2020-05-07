@@ -10,24 +10,34 @@ app.use(bodyParser.json());
 
 
 //Database
-var mongojs = require('mongojs');
-//Used the create ObjectID to search the _id field
-var ObjectId = require('mongojs').ObjectID;
-var db = mongojs('tta', ['stores', 'parts', 'tickets']);
 var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/loginapp');
+mongoose.connect('mongodb://localhost/tta', {useNewUrlParser: true});
+
+//Models
+var Part = require('./models/Part');
+
 
 app.get('/', (req, res) => {
 	res.send("Hello World");
 });
 
+app.get('/parts', (req, res) => {
+	Part.find()
+	.then(parts => {
+		res.json({data: parts});
+	})
+	.catch(err => {
+		res.json({data: err});
+	})
+});
+
 app.post('/part', (req, res) => {
-	db.parts.insert(req.body, (err, result) => {
+/*	db.parts.insert(req.body, (err, result) => {
 		if(err) res.json({reply: "error"});
 		else {
 			res.json({reply: "added", id: result._id});
 		}
-	});
+	});*/
 });
 
 const port = 5000;
