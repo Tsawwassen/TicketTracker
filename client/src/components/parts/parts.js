@@ -43,12 +43,12 @@ class Parts extends Component {
 
   	selectedPartChange(event){
   		let activePart = this.state.selectedPart;
-  		activePart.id = event.target.value;
+  		activePart._id = event.target.value;
   		this.setState({selectedPart: activePart});
   	}
 
   	handleSelect(event){
-  		fetch('/parts/' + this.state.selectedPart.id)
+  		fetch('/parts/' + this.state.selectedPart._id)
       	.then(res => res.json())
       	.then(part => {
       		this.setState({selectedPart: part.data});
