@@ -9,7 +9,7 @@
     "client": "cd client && npm start",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
     "seedParts": "cd initial && mongoimport --db tta --collection parts --file parts.json",
-    "seedStores": "cd initial && mongoimport --db tta --collection stores --file stores.json",
+    "seedStores": "cd initial && mongoimport --db tta --collection stores --file stores.json"
   },
   "repository": {
     "type": "git",
