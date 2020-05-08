@@ -1,8 +1,16 @@
 {
 	"storeNumber": 4,
-	"address": { "street": "4845 Main street",
+	"address": { "street": "4845 Main Street",
 				"city": "Vancouver",
 				"province": "BC"
 			},
 	"phoneNumber": "1234560258"
+}
+{
+	"storeNumber": 8,
+	"address": { "street": "678 Ave",
+				"city": "Delta",
+				"province": "AB"
+			},
+	"phoneNumber": "9573497852"
 }
