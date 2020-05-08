@@ -12,6 +12,7 @@ mongoose.connect('mongodb://localhost/tta', {useNewUrlParser: true});
 
 //Models
 var Parts = require('./models/Part');
+var Stores = require('./models/Store');
 
 app.get('/', (req, res) => {
 	res.send("Hello World");
@@ -39,7 +40,6 @@ app.get('/parts/:id', (req, res) => {
 	})
 })
 
-
 app.post('/part', (req, res) => {
 
 	Parts.create(req.body)
@@ -61,6 +61,16 @@ app.put('/part', (req, res) => {
 	.catch(error => {
 		res.json({status: "error", data: error});
 	})
+});
+
+app.get('/stores', (req, res) => {
+	Stores.find(req.query)
+	.then(stores => {
+		res.json({status: "success", data: stores});
+	})
+	.catch(error => {
+		res.json({status: "error", data: error});
+	});
 });
 
 const port = 5000;
