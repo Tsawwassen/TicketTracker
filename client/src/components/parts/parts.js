@@ -7,21 +7,16 @@ class Parts extends Component {
 	    this.state = {
 	    	view: "default",
 	    	selectedPart: {
-	    		id:"",
+	    		_id:"",
 	    		sku:"",
 	    		name:"",
 	    		desc:"",
 	    	},
-	    	newPart: {
+	    	tempPart: {
+	    		_id:"",
 	    		sku:"",
 	    		name:"",
 	    		desc:"",
-	    	},
-	    	editPart: {
-	    		id: "",
-	    		sku:"",
-	    		name: "",
-	    		desc: ""
 	    	},
 	    	partsList: []
 
@@ -33,11 +28,10 @@ class Parts extends Component {
 	    this.handleAddPart = this.handleAddPart.bind(this);
 	    this.handleEditClick = this.handleEditClick.bind(this);
 
-	    this.handleChange = this.handleChange.bind(this);
+	    this.handleFormChange = this.handleFormChange.bind(this);
 	    this.selectedPartChange = this.selectedPartChange.bind(this);
 
 	    this.handleEditPartSave = this.handleEditPartSave.bind(this);
-	    this.handleEditChange = this.handleEditChange.bind(this);
 
   	}
 
@@ -57,7 +51,6 @@ class Parts extends Component {
   		fetch('/parts/' + this.state.selectedPart.id)
       	.then(res => res.json())
       	.then(part => {
-      		part.data.id = part.data._id;
       		this.setState({selectedPart: part.data});
       		this.setState({view: "select"});
       	});
@@ -71,8 +64,8 @@ class Parts extends Component {
 
   	handleAddPart(event){
 
-  		let partToAdd = this.state.newPart
-
+  		let partToAdd = this.state.tempPart
+  		delete partToAdd._id;
   		const requestOptions = {
       		method: 'POST',
       		headers: { 'Content-Type': 'application/json' },
@@ -83,8 +76,7 @@ class Parts extends Component {
         .then(response => response.json())
         .then(data => {
         	if(data.status !== 'error'){
-         		partToAdd.id = data.id
-	  			this.setState({selectedPart: partToAdd});
+	  			this.setState({selectedPart: data.data});
 	  			this.setState({view: "select"});
          	}else {
          		alert("Error adding the part to the database");
@@ -98,12 +90,12 @@ class Parts extends Component {
   	handleEditClick(event){
   		
   		this.setState({view: "edit"});
-  		this.setState({editPart: this.state.selectedPart});
+  		this.setState({tempPart: this.state.selectedPart});
   		event.preventDefault();
   	}
 
   	handleEditPartSave(event){
-  		let partToUpdate = this.state.editPart;
+  		let partToUpdate = this.state.tempPart;
 
   		const requestOptions = {
       		method: 'PUT',
@@ -115,7 +107,6 @@ class Parts extends Component {
         .then(response => response.json())
         .then(data => {
         	if(data.status !== 'error'){
-         		data.data.id = data.data._id
          		this.setState({selectedPart: data.data});
          		this.setState({view: "select"});
          	}else {
@@ -125,8 +116,8 @@ class Parts extends Component {
   		event.preventDefault();
   	}
 
-  	handleChange(event){
-  		let partChange = this.state.newPart;
+  	handleFormChange(event){
+  		let partChange = this.state.tempPart;
 
   		switch(event.target.name){
   			case "sku":
@@ -138,25 +129,10 @@ class Parts extends Component {
   			default:
   				console.log("Error, form name is not defined"); break;
   		}
-  		this.setState({newPart: partChange});
+  		this.setState({tempPart: partChange});
  
   	}
 
-  	handleEditChange(event){
-  		let partChange = this.state.editPart;
-
-  		switch(event.target.name){
-  			case "sku":
-  				partChange.sku = event.target.value; break;
-  			case "name":
-  				partChange.name = event.target.value; break;
-  			case "desc":
-  				partChange.desc = event.target.value; break;
-  			default:
-  				console.log("Error, form name is not defined"); break;
-  		}
-  		this.setState({editPart: partChange});
-  	}
 
   render () {
   	let page;
@@ -184,15 +160,15 @@ class Parts extends Component {
   				<form  onSubmit={this.handleAddPart}>
   					<label>
 			          	SKU:
-			          	<input type="text" name="sku" onChange={this.handleChange}/>
+			          	<input type="text" name="sku" onChange={this.handleFormChange}/>
 			        </label>
 			        <label>
 			          	Name:
-			          	<input type="text" name="name" onChange={this.handleChange}/>
+			          	<input type="text" name="name" onChange={this.handleFormChange}/>
 			        </label>
 			        <label>
 			          	Description:
-			          	<input type="text" name="desc" onChange={this.handleChange}/>
+			          	<input type="text" name="desc" onChange={this.handleFormChange}/>
 			        </label>
   					<input type="submit" value="Add Part" />
 		    	</form>
@@ -204,7 +180,7 @@ class Parts extends Component {
   				<p>SKU : {this.state.selectedPart.sku}</p>
   				<p>Name : {this.state.selectedPart.name}</p>
   				<p>Description : {this.state.selectedPart.desc}</p>
-  				<p>ID : {this.state.selectedPart.id}</p>
+  				<p>ID : {this.state.selectedPart._id}</p>
   				<button onClick={this.handleEditClick}>Edit</button>
   			</div>);
   	} else if (this.state.view === "edit"){
@@ -214,15 +190,15 @@ class Parts extends Component {
   				<form  onSubmit={this.handleEditPartSave}>
   					<label>
 			          	SKU:
-			          	<input type="text" name="sku" value={this.state.editPart.sku} onChange={this.handleEditChange}/>
+			          	<input type="text" name="sku" value={this.state.tempPart.sku} onChange={this.handleFormChange}/>
 			        </label>
 			        <label>
 			          	Name:
-			          	<input type="text" name="name" value={this.state.editPart.name} onChange={this.handleEditChange}/>
+			          	<input type="text" name="name" value={this.state.tempPart.name} onChange={this.handleFormChange}/>
 			        </label>
 			        <label>
 			          	Description:
-			          	<input type="text" name="desc" value={this.state.editPart.desc} onChange={this.handleEditChange}/>
+			          	<input type="text" name="desc" value={this.state.tempPart.desc} onChange={this.handleFormChange}/>
 			        </label>
   					<input type="submit" value="Edit Part" />
 		    	</form>
