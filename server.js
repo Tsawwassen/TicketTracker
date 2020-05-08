@@ -46,10 +46,11 @@ app.get('/parts/:id', (req, res) => {
 
 
 app.post('/part', (req, res) => {
+
 	Parts.create(req.body)
 	.then(parts => {
 		console.log(parts);
-		res.json({status: "success"});
+		res.json({status: "success", data: parts});
 	})
 	.catch(error => {
 		res.json({status: "error"});
@@ -57,7 +58,6 @@ app.post('/part', (req, res) => {
 });
 
 app.put('/part', (req, res) => {
-	delete req.body.id;
 
 	Parts.findByIdAndUpdate(req.body._id, req.body, {new: true})
 	.then(profile => {
