@@ -47,8 +47,13 @@ class Stores extends Component {
     }
 
   handleSelectButton(event){
-    console.log("Select button pressed");
-    /** TODO **/
+    fetch('/stores/' + this.state.selectedStore._id)
+    .then(res => res.json())
+    .then(part => {
+      this.setState({selectedStore: part.data});
+      this.setState({view: "select"});
+    });
+      
     event.preventDefault();
   }
 
@@ -79,7 +84,17 @@ class Stores extends Component {
           <button onClick={this.handleAddButton}>Add</button>
         </div>
       );
+    } else if (this.state.view === "select"){
+      page = (
+        <div>
+          <h1>Selected</h1>
+          <p>Store Number : {this.state.selectedStore.storeNumber}</p>
+          <p>Store Address : {this.state.selectedStore.address.street} - {this.state.selectedStore.address.city}, {this.state.selectedStore.address.province} </p>
+          <p>Phone Number: {this.state.selectedStore.phoneNumber}</p>
+        </div>
+      );
     }
+
     return (
     	<div>
         {page}
@@ -106,11 +121,6 @@ export default Stores;
     }
 
 
-    selectedPartChange(event){
-      let activePart = this.state.selectedPart;
-      activePart._id = event.target.value;
-      this.setState({selectedPart: activePart});
-    }
 
     handleSelectButton(event){
       fetch('/parts/' + this.state.selectedPart._id)
