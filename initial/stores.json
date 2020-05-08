@@ -1,0 +1,8 @@
+{
+	"storeNumber": 4,
+	"address": { "street": "4845 Main street",
+				"city": "Vancouver",
+				"province": "BC"
+			},
+	"phoneNumber": "1234560258"
+}
