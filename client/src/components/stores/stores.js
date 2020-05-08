@@ -16,7 +16,7 @@ class Stores extends Component {
         },
         phoneNumber: ""
       },
-      tempPart: {
+      tempStore: {
         _id: "",
         storeNumber:"",
         address: { 
@@ -28,11 +28,62 @@ class Stores extends Component {
       },
       storesList: []
     }
+    this.handleSelectButton = this.handleSelectButton.bind(this);
+    this.handleAddButton = this.handleAddButton.bind(this);
+
+    this.selectedStoreChange = this.selectedStoreChange.bind(this);
+  }
+
+  componentDidMount(){
+      fetch('/stores')
+        .then(res => res.json())
+        .then(stores => this.setState({storesList: stores.data}));
+  }
+
+  selectedStoreChange(event){
+      let activeStore = this.state.selectedStore;
+      activeStore._id = event.target.value;
+      this.setState({selectedStore: activeStore});
+    }
+
+  handleSelectButton(event){
+    console.log("Select button pressed");
+    /** TODO **/
+    event.preventDefault();
+  }
+
+  handleAddButton(event){
+    console.log("add button pressed");
+    /** TODO **/
+    event.preventDefault();
   }
 
   render () {
+    let page;
+    if(this.state.view === "default"){
+      page = (
+        <div>
+          <h1>Stores</h1>
+          <form onSubmit={this.handleSelectButton}>
+            <label>
+              Select a Store to view
+              <select onChange={this.selectedStoreChange}>
+                {this.state.storesList.map( store => 
+                  <option key={store._id} value={store._id}>{store.storeNumber}</option>
+                )}
+              </select>
+            </label>
+            <br />
+            <input type="submit" value="Select" />
+          </form>
+          <button onClick={this.handleAddButton}>Add</button>
+        </div>
+      );
+    }
     return (
-    	<h1>Stores</h1>
+    	<div>
+        {page}
+      </div>
     );
   }
 }
@@ -54,11 +105,6 @@ export default Stores;
 
     }
 
-    componentDidMount(){
-      fetch('/parts')
-        .then(res => res.json())
-        .then(parts => this.setState({partsList: parts.data}));
-    }
 
     selectedPartChange(event){
       let activePart = this.state.selectedPart;
@@ -155,23 +201,7 @@ export default Stores;
   render () {
     let page;
 
-    if(this.state.view === "default"){
-      page = (<div><h1>Parts</h1>
-          <form onSubmit={this.handleSelectButton}>
-            <label>
-              Select a part to view
-              <select onChange={this.selectedPartChange}>
-                {this.state.partsList.map( part => 
-                      <option key={part._id} value={part._id}>{part.sku}</option>
-                )}
-                
-              </select>
-            </label>
-            <br />
-            <input type="submit" value="Select" />
-          </form>
-          <button onClick={this.handleAddButton}>Add</button></div>);
-    } else if (this.state.view === "add"){
+     else if (this.state.view === "add"){
       page = (
         <div>
           <h1>Add Part</h1>
