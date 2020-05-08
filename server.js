@@ -1,13 +1,10 @@
 const express = require('express');
 const app = express();
 
-// require bodyParser
+//BodyParser
 var bodyParser = require('body-parser');
-// parse application/x-www-form-urlencoded
 app.use(bodyParser.urlencoded({ extended: false }));
-// parse application/json
 app.use(bodyParser.json());
-
 
 
 //Database
@@ -27,8 +24,8 @@ app.get('/parts', (req, res) => {
 	.then(parts => {
 		res.json({data: parts});
 	})
-	.catch(err => {
-		res.json({data: err});
+	.catch(error => {
+		res.json({status: "error", data: error});
 	});
 });
 
@@ -40,7 +37,7 @@ app.get('/parts/:id', (req, res) => {
 	})
 	.catch(error => {
 		//error
-		res.json({status: "error"});
+		res.json({status: "error", data: error});
 	})
 })
 
@@ -53,7 +50,7 @@ app.post('/part', (req, res) => {
 		res.json({status: "success", data: parts});
 	})
 	.catch(error => {
-		res.json({status: "error"});
+		res.json({status: "error", data: error});
 	});
 });
 
@@ -66,8 +63,6 @@ app.put('/part', (req, res) => {
 	.catch(error => {
 		res.json({status: "error", data: error});
 	})
-	
-	//Parts.findByIdAndUpdate
 });
 
 const port = 5000;
