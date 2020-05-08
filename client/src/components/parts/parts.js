@@ -22,16 +22,17 @@ class Parts extends Component {
 
     	};
   
-		this.handleSelect = this.handleSelect.bind(this);
-		this.handleAdd = this.handleAdd.bind(this);
+		this.handleSelectButton = this.handleSelectButton.bind(this);
+		this.handleAddButton = this.handleAddButton.bind(this);
+		this.handleEditButton = this.handleEditButton.bind(this);
 
 	    this.handleAddPart = this.handleAddPart.bind(this);
-	    this.handleEditClick = this.handleEditClick.bind(this);
+	    this.handleEditPart = this.handleEditPart.bind(this);
 
 	    this.handleFormChange = this.handleFormChange.bind(this);
 	    this.selectedPartChange = this.selectedPartChange.bind(this);
 
-	    this.handleEditPartSave = this.handleEditPartSave.bind(this);
+	    
 
   	}
 
@@ -47,7 +48,7 @@ class Parts extends Component {
   		this.setState({selectedPart: activePart});
   	}
 
-  	handleSelect(event){
+  	handleSelectButton(event){
   		fetch('/parts/' + this.state.selectedPart._id)
       	.then(res => res.json())
       	.then(part => {
@@ -58,12 +59,11 @@ class Parts extends Component {
   		event.preventDefault();
   	}
 
-	handleAdd(event){
+	handleAddButton(event){
 	  	this.setState({view: "add"});
 	}
 
   	handleAddPart(event){
-
   		let partToAdd = this.state.tempPart
   		delete partToAdd._id;
   		const requestOptions = {
@@ -87,14 +87,14 @@ class Parts extends Component {
 		event.preventDefault();
   	}
 
-  	handleEditClick(event){
+  	handleEditButton(event){
   		
   		this.setState({view: "edit"});
   		this.setState({tempPart: this.state.selectedPart});
   		event.preventDefault();
   	}
 
-  	handleEditPartSave(event){
+  	handleEditPart(event){
   		let partToUpdate = this.state.tempPart;
 
   		const requestOptions = {
@@ -139,7 +139,7 @@ class Parts extends Component {
 
   	if(this.state.view === "default"){
   		page = (<div><h1>Parts</h1>
-		    	<form onSubmit={this.handleSelect}>
+		    	<form onSubmit={this.handleSelectButton}>
 			    	<label>
 			    		Select a part to view
 			    		<select onChange={this.selectedPartChange}>
@@ -152,7 +152,7 @@ class Parts extends Component {
 			    	<br />
 		    		<input type="submit" value="Select" />
 		    	</form>
-		    	<button onClick={this.handleAdd}>Add</button></div>);
+		    	<button onClick={this.handleAddButton}>Add</button></div>);
   	} else if (this.state.view === "add"){
   		page = (
   			<div>
@@ -181,13 +181,13 @@ class Parts extends Component {
   				<p>Name : {this.state.selectedPart.name}</p>
   				<p>Description : {this.state.selectedPart.desc}</p>
   				<p>ID : {this.state.selectedPart._id}</p>
-  				<button onClick={this.handleEditClick}>Edit</button>
+  				<button onClick={this.handleEditButton}>Edit</button>
   			</div>);
   	} else if (this.state.view === "edit"){
   		page = ( 
   			<div>
   				<h1>Edit</h1>
-  				<form  onSubmit={this.handleEditPartSave}>
+  				<form  onSubmit={this.handleEditPart}>
   					<label>
 			          	SKU:
 			          	<input type="text" name="sku" value={this.state.tempPart.sku} onChange={this.handleFormChange}/>
