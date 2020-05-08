@@ -73,5 +73,17 @@ app.get('/stores', (req, res) => {
 	});
 });
 
+app.get('/stores/:id', (req, res) => {
+	Stores.findById(req.params.id)
+	.then(store => {
+		//success
+		res.json({status: "success", data: store});
+	})
+	.catch(error => {
+		//error
+		res.json({status: "error", data: error});
+	})
+})
+
 const port = 5000;
 app.listen(port, () => console.log(`server started on ${port}`));
