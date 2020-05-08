@@ -1,7 +1,6 @@
 var mongoose = require('mongoose');
 
 const Store = new mongoose.Schema({
-	//sku: {type: String},
 	storeNumber: {type: Number},
 	address: { street: {type: String},
 				city: {type: String},
@@ -12,3 +11,15 @@ const Store = new mongoose.Schema({
 });
 
 module.exports = mongoose.model('Store', Store);
+
+/** Easy copy/past of model in JSON format
+	
+	_id: "",
+	storeNumber:"",
+	address: { street: "",
+				city: "",
+				province:""
+			},
+	phoneNumber: ""
+
+**/
