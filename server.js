@@ -6,14 +6,12 @@ var bodyParser = require('body-parser');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-
 //Database
 var mongoose = require('mongoose');
 mongoose.connect('mongodb://localhost/tta', {useNewUrlParser: true});
 
 //Models
 var Parts = require('./models/Part');
-
 
 app.get('/', (req, res) => {
 	res.send("Hello World");
