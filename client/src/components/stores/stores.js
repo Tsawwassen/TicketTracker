@@ -36,6 +36,7 @@ class Stores extends Component {
     this.handleFormChange = this.handleFormChange.bind(this);
 
     this.handleEditStore = this.handleEditStore.bind(this);
+    this.handleAddStore = this.handleAddStore.bind(this);
   }
 
   componentDidMount(){
@@ -69,9 +70,7 @@ class Stores extends Component {
   }
 
   handleAddButton(event){
-    console.log("add button pressed");
-    /** TODO **/
-    event.preventDefault();
+    this.setState({view: "add"});
   }
 
   handleEditStore(event){
@@ -94,6 +93,31 @@ class Stores extends Component {
           }
         });
       event.preventDefault();
+  }
+
+  handleAddStore(event){
+    console.log("!!!!!!!!!!!handleAddStore");
+    let storeToAdd = this.state.tempStore;
+    delete storeToAdd._id;
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(storeToAdd)
+    };
+
+    fetch('/store', requestOptions)
+        .then(response => response.json())
+        .then(data => {
+          if(data.status !== 'error'){
+            this.setState({selectedStore: data.data});
+            this.setState({view: "select"});
+          }else {
+            alert("Error adding the store to the database");
+
+          }
+        });
+
+    event.preventDefault();
   }
 
   handleFormChange(event){
@@ -178,7 +202,36 @@ class Stores extends Component {
 
         </div>
       );
-
+    } else if (this.state.view === "add"){
+      page = (
+        <div>
+          <h1>Add Store</h1>
+          <form  onSubmit={this.handleAddStore}>
+            <label>
+              Store Number:
+              <input type="text" name="storeNumber" onChange={this.handleFormChange}/>
+            </label>
+            <label>
+              Street:
+              <input type="text" name="street" onChange={this.handleFormChange}/>
+            </label>
+            <label>
+              City:
+              <input type="text" name="city" onChange={this.handleFormChange}/>
+            </label>
+            <label>
+              Province:
+              <input type="text" name="province" onChange={this.handleFormChange}/>
+            </label>
+            <label>
+              Phone Number:
+              <input type="text" name="phoneNumber" onChange={this.handleFormChange}/>
+            </label>
+ 
+            <input type="submit" value="Add Store" />
+          </form>
+        </div>
+      );
     }
 
     return (
@@ -204,18 +257,7 @@ export default Stores;
     }
 
 
-  handleAddButton(event){
-      this.setState({view: "add"});
-  }
 
-    handleAddPart(event){
-      let partToAdd = this.state.tempPart
-      delete partToAdd._id;
-      const requestOptions = {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(partToAdd)
-      };
 
       fetch('/part', requestOptions)
         .then(response => response.json())
@@ -233,44 +275,8 @@ export default Stores;
     }
 
 
-    handleEditPart(event){
-      let partToUpdate = this.state.tempPart;
 
-      const requestOptions = {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(partToUpdate)
-      };
 
-      fetch('/part', requestOptions)
-        .then(response => response.json())
-        .then(data => {
-          if(data.status !== 'error'){
-            this.setState({selectedPart: data.data});
-            this.setState({view: "select"});
-          }else {
-            alert("Error updating the part to the database");
-          }
-        });
-      event.preventDefault();
-    }
-
-    handleFormChange(event){
-      let partChange = this.state.tempPart;
-
-      switch(event.target.name){
-        case "sku":
-          partChange.sku = event.target.value; break;
-        case "name":
-          partChange.name = event.target.value; break;
-        case "desc":
-          partChange.desc = event.target.value; break;
-        default:
-          console.log("Error, form name is not defined"); break;
-      }
-      this.setState({tempPart: partChange});
- 
-    }
 
 
   render () {
@@ -296,44 +302,4 @@ export default Stores;
             <input type="submit" value="Add Part" />
           </form>
         </div>);
-    } else if (this.state.view === "select"){
-      page = (
-        <div>
-          <h1>Selected</h1>
-          <p>SKU : {this.state.selectedPart.sku}</p>
-          <p>Name : {this.state.selectedPart.name}</p>
-          <p>Description : {this.state.selectedPart.desc}</p>
-          <p>ID : {this.state.selectedPart._id}</p>
-          <button onClick={this.handleEditButton}>Edit</button>
-        </div>);
-    } else if (this.state.view === "edit"){
-      page = ( 
-        <div>
-          <h1>Edit</h1>
-          <form  onSubmit={this.handleEditPart}>
-            <label>
-                  SKU:
-                  <input type="text" name="sku" value={this.state.tempPart.sku} onChange={this.handleFormChange}/>
-              </label>
-              <label>
-                  Name:
-                  <input type="text" name="name" value={this.state.tempPart.name} onChange={this.handleFormChange}/>
-              </label>
-              <label>
-                  Description:
-                  <input type="text" name="desc" value={this.state.tempPart.desc} onChange={this.handleFormChange}/>
-              </label>
-            <input type="submit" value="Edit Part" />
-          </form>
-
-        </div>);
-    }
-    return (
-      <div>
-        {page}
-      </div>
-    );
-  }
-}
-
-export default Parts;*/
+   */
