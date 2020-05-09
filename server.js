@@ -44,7 +44,6 @@ app.post('/part', (req, res) => {
 
 	Parts.create(req.body)
 	.then(parts => {
-		console.log(parts);
 		res.json({status: "success", data: parts});
 	})
 	.catch(error => {
@@ -93,6 +92,16 @@ app.put('/store', (req, res) => {
 	.catch(error => {
 		res.json({status: "error", data: error});
 	})
+});
+
+app.post('/store', (req, res) => {
+	Stores.create(req.body)
+	.then(stores => {
+		res.json({status: "success", data: stores});
+	})
+	.catch(error => {
+		res.json({status: "error", data: error});
+	});
 });
 
 const port = 5000;
