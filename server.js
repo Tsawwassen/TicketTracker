@@ -55,8 +55,8 @@ app.post('/part', (req, res) => {
 app.put('/part', (req, res) => {
 
 	Parts.findByIdAndUpdate(req.body._id, req.body, {new: true})
-	.then(profile => {
-		res.json({status: "success", data: profile});
+	.then(part => {
+		res.json({status: "success", data: part});
 	})
 	.catch(error => {
 		res.json({status: "error", data: error});
@@ -84,6 +84,16 @@ app.get('/stores/:id', (req, res) => {
 		res.json({status: "error", data: error});
 	})
 })
+
+app.put('/store', (req, res) => {
+	Stores.findByIdAndUpdate(req.body._id, req.body, {new: true})
+	.then(store => {
+		res.json({status: "success", data: store});
+	})
+	.catch(error => {
+		res.json({status: "error", data: error});
+	})
+});
 
 const port = 5000;
 app.listen(port, () => console.log(`server started on ${port}`));
