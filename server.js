@@ -1,3 +1,12 @@
+/*********************************************************************************************************************
+*
+* Ticket Tracker Server
+* ----------------
+* API used to receive requests from the React app, and return requested information form the Database (MongoDB)
+*
+************************************************************************************************************************/
+
+
 const express = require('express');
 const app = express();
 
