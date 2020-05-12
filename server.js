@@ -114,12 +114,18 @@ app.post('/store', (req, res) => {
 	});
 });
 
-app.post('/ticket', (req, res) => {
-	console.log(req.body);
-	req.body.storeNumber = parseInt(req.body.storeNumber);
-	
+app.get('/tickets', (req, res) => {
+	Tickets.find(req.query)
+	.then(tickets => {
+		res.json({status: "success", data: tickets});
+	})
+	.catch(error => {
+		res.json({status: "error", data: error});
+	});
+})
 
-	console.log(req.body);
+app.post('/ticket', (req, res) => {
+	req.body.storeNumber = parseInt(req.body.storeNumber);
 
 	Tickets.create(req.body)
 	.then(ticket => {
@@ -127,9 +133,7 @@ app.post('/ticket', (req, res) => {
 	})
 	.catch(error =>{
 		res.json({status: "error", data: error});
-	})
-
-	//res.json("hello form app.post/ticket");
+	});
 });
 
 const port = 5000;
