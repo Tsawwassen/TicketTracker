@@ -22,7 +22,7 @@ class Tickets extends Component {
           editDate: "",
           closedDate: "",
           partsList: [{sku: ""}],
-          Notes: [ {body: "", date: ""}]
+          notes: [ {body: "", date: ""}]
       },
       tempTicket: {
           storeNumber: "",
@@ -31,7 +31,7 @@ class Tickets extends Component {
           editDate: "",
           closedDate: "",
           partsList: [{sku: ""}],
-          Notes: [ {body: "", date: ""}]
+          notes: [ {body: "", date: ""}]
       },
       storesList: [],
       partsList: []
@@ -41,6 +41,7 @@ class Tickets extends Component {
     this.handleCreateTicket = this.handleCreateTicket.bind(this);
 
     this.handleSelectedStoreChange = this.handleSelectedStoreChange.bind(this);
+    this.handleFormChange = this.handleFormChange.bind(this);
   }
 
     componentDidMount(){
@@ -54,7 +55,21 @@ class Tickets extends Component {
   }
 
   handleSelectedStoreChange(event){
-    console.log(event);
+    let storeChange = this.state.tempTicket;
+    storeChange.storeNumber = event.target.value;
+    this.setState({tempTicket: storeChange})
+  }
+
+  handleFormChange(event){
+    let ticketChange = this.state.tempTicket;
+
+      switch(event.target.name){
+        case "desc":
+          ticketChange.desc = event.target.value; break;
+        default:
+          console.log("Error, form name is not defined"); break;
+      }
+      this.setState({tempTicket: ticketChange});
   }
 
   handleCreateButton(event){
@@ -62,8 +77,27 @@ class Tickets extends Component {
   }
 
   handleCreateTicket(event){
-    console.log("Send ticket to server to be created");
-    console.log(this.state.tempTicket);
+
+    let ticketToCreate = this.state.tempTicket;
+
+    ticketToCreate.createDate = new Date();
+    ticketToCreate.notes = [];
+    ticketToCreate.partsList = [];
+
+    const requestOptions = {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(ticketToCreate)
+    };
+
+    fetch('/ticket', requestOptions)
+        .then(response => response.json())
+        .then(ticket => {
+          this.setState({selectedTicket: ticket.data});
+          this.setState({view: "selected"});
+          //console.log(ticket.data);
+    });
+
 
     event.preventDefault();
   }
@@ -92,10 +126,19 @@ class Tickets extends Component {
                 )}
               </select>
             </label>
+            <label>
+              Description
+              <input type="text" name="desc" value={this.state.tempTicket.desc} onChange={this.handleFormChange}/>
+            </label>
             <input type="submit" value="Create Ticket" />
           </form>
           </div>
         );
+    } else if (this.state.view === "selected"){
+      //console.log(this.state.selectedTicket);
+      page = ( <div>
+        <h1>Selected </h1> 
+        </div>);
     }
     return (
       <div> {page}</div>
