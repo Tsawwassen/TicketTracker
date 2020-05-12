@@ -114,6 +114,17 @@ app.post('/store', (req, res) => {
 	});
 });
 
+app.get('/ticket/:id', (req, res) => {
+	Tickets.findById(req.params.id)
+	.then(ticket => {
+		res.json({status: "success", data: ticket});
+	})
+	.catch(error => {
+		res.json({status: "error", data: error});
+	});
+
+});
+
 app.get('/tickets', (req, res) => {
 	Tickets.find(req.query)
 	.then(tickets => {
@@ -122,7 +133,7 @@ app.get('/tickets', (req, res) => {
 	.catch(error => {
 		res.json({status: "error", data: error});
 	});
-})
+});
 
 app.post('/ticket', (req, res) => {
 	req.body.storeNumber = parseInt(req.body.storeNumber);
