@@ -104,7 +104,6 @@ class Stores extends Component {
   }
 
   handleAddStore(event){
-    console.log("!!!!!!!!!!!handleAddStore");
     let storeToAdd = this.state.tempStore;
     delete storeToAdd._id;
     const requestOptions = {
