@@ -40,7 +40,7 @@ class Tickets extends Component {
 
     this.handleCreateTicket = this.handleCreateTicket.bind(this);
 
-    this.handleSelectedTicketFormChange = this.handleSelectedTicketFormChange.bind(this);
+    this.handleSelectedStoreFormChange = this.handleSelectedStoreFormChange.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
   }
 
@@ -54,7 +54,7 @@ class Tickets extends Component {
 
   }
 
-  handleSelectedTicketFormChange(event){
+  handleSelectedStoreFormChange(event){
     let storeChange = this.state.tempTicket;
     storeChange.storeNumber = event.target.value;
     this.setState({tempTicket: storeChange})
@@ -120,7 +120,7 @@ class Tickets extends Component {
             <form  onSubmit={this.handleCreateTicket}>
             <label>
              Select a Store
-              <select onChange={this.handleSelectedTicketFormChange}>
+              <select onChange={this.handleSelectedStoreFormChange}>
                 {this.state.storesList.map( store => 
                   <option key={store._id} value={store.storeNumber}>{store.storeNumber}</option>
                 )}
@@ -135,9 +135,16 @@ class Tickets extends Component {
           </div>
         );
     } else if (this.state.view === "selected"){
-      //console.log(this.state.selectedTicket);
       page = ( <div>
         <h1>Selected </h1> 
+        <p>Store Number : {this.state.selectedTicket.storeNumber}</p>
+        <p> Description : {this.state.selectedTicket.desc}</p>
+        <p> Create Date : {this.state.selectedTicket.createDate}</p>
+        <p> Edit Date : {this.state.selectedTicket.editDate}</p>
+        <p> Closed Date : {this.state.selectedTicket.closedDate}</p>
+        <p> Parts List : {this.state.selectedTicket.partsList}</p>
+        <p> Notes : {this.state.selectedTicket.notes}</p>
+
         </div>);
     }
     return (
