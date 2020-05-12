@@ -114,5 +114,23 @@ app.post('/store', (req, res) => {
 	});
 });
 
+app.post('/ticket', (req, res) => {
+	console.log(req.body);
+	req.body.storeNumber = parseInt(req.body.storeNumber);
+	
+
+	console.log(req.body);
+
+	Tickets.create(req.body)
+	.then(ticket => {
+		res.json({status: "success", data: ticket});
+	})
+	.catch(error =>{
+		res.json({status: "error", data: error});
+	})
+
+	//res.json("hello form app.post/ticket");
+});
+
 const port = 5000;
 app.listen(port, () => console.log(`server started on ${port}`));
