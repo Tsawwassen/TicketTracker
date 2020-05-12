@@ -22,6 +22,7 @@ mongoose.connect('mongodb://localhost/tta', {useNewUrlParser: true});
 //Models
 var Parts = require('./models/Part');
 var Stores = require('./models/Store');
+var Tickets = require('./models/Ticket');
 
 app.get('/', (req, res) => {
 	res.send("Hello World");
