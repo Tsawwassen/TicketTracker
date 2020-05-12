@@ -40,7 +40,7 @@ class Tickets extends Component {
 
     this.handleCreateTicket = this.handleCreateTicket.bind(this);
 
-    this.handleSelectedStoreChange = this.handleSelectedStoreChange.bind(this);
+    this.handleSelectedTicketFormChange = this.handleSelectedTicketFormChange.bind(this);
     this.handleFormChange = this.handleFormChange.bind(this);
   }
 
@@ -54,7 +54,7 @@ class Tickets extends Component {
 
   }
 
-  handleSelectedStoreChange(event){
+  handleSelectedTicketFormChange(event){
     let storeChange = this.state.tempTicket;
     storeChange.storeNumber = event.target.value;
     this.setState({tempTicket: storeChange})
@@ -120,7 +120,7 @@ class Tickets extends Component {
             <form  onSubmit={this.handleCreateTicket}>
             <label>
              Select a Store
-              <select onChange={this.handleSelectedStoreChange}>
+              <select onChange={this.handleSelectedTicketFormChange}>
                 {this.state.storesList.map( store => 
                   <option key={store._id} value={store.storeNumber}>{store.storeNumber}</option>
                 )}
