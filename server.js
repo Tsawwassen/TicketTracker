@@ -148,6 +148,7 @@ app.post('/ticket', (req, res) => {
 });
 
 app.put('/ticket', (req, res) => {
+	req.body.editDate = new Date();
 	Tickets.findByIdAndUpdate(req.body._id, req.body, {new: true})
 	.then(ticket => {
 		res.json({status: "success", data: ticket});
