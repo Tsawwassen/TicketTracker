@@ -147,5 +147,15 @@ app.post('/ticket', (req, res) => {
 	});
 });
 
+app.put('/ticket', (req, res) => {
+	Tickets.findByIdAndUpdate(req.body._id, req.body, {new: true})
+	.then(ticket => {
+		res.json({status: "success", data: ticket});
+	})
+	.catch(error => {
+		res.json({status: "error", data: error});
+	})
+});
+
 const port = 5000;
 app.listen(port, () => console.log(`server started on ${port}`));
