@@ -8,7 +8,7 @@ const Ticket = new mongoose.Schema({
 	editDate: {type: String},
 	closedDate: {type: String},
 	partsList: [],
-	notes: [ {body: {type:String}, date: {type: Date}}]
+	notes: [ {body: {type:String}, date: {type: String}}]
 });
 
 module.exports = mongoose.model('Ticket', Ticket);
