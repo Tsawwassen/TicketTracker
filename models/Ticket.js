@@ -7,7 +7,7 @@ const Ticket = new mongoose.Schema({
 	createDate: {type: String},
 	editDate: {type: String},
 	closedDate: {type: String},
-	partsList: [{ sku: {type: String}}],
+	partsList: [],
 	notes: [ {body: {type:String}, date: {type: Date}}]
 });
 
