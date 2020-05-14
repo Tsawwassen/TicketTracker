@@ -23,7 +23,7 @@ class Tickets extends Component {
           editDate: "",
           closedDate: "",
           partsList: [],
-          notes: [ {body: "", date: ""}]
+          notes: []
       },
       tempTicket: {
           _id: "",
@@ -38,8 +38,10 @@ class Tickets extends Component {
       storesList: [],
       partsList: [],
       ticketList: [],
-      selectedPart: ""
+      selectedPart: "",
+      tempNote: ""
     }
+
     this.handleCreateButton = this.handleCreateButton.bind(this);
     this.handleSelectButton = this.handleSelectButton.bind(this);
 
@@ -53,6 +55,8 @@ class Tickets extends Component {
     this.handleSelectedPart = this.handleSelectedPart.bind(this);
     this.handleAddPart = this.handleAddPart.bind(this);
     this.saveTicketButton = this.saveTicketButton.bind(this);
+    this.handleNoteChange = this.handleNoteChange.bind(this);
+    this.addNoteButton = this.addNoteButton.bind(this);
   }
 
     componentDidMount(){
@@ -165,6 +169,19 @@ class Tickets extends Component {
 
   }
 
+  handleNoteChange(event){
+    this.setState({tempNote: event.target.value});
+  }
+
+  addNoteButton(event){
+    let tempTicket = this.state.selectedTicket;
+
+
+    tempTicket.notes.push({body: this.state.tempNote, date: new Date()});
+
+    this.setState({selectedTicket: tempTicket});
+  }
+
   render () {
     let page;
 
@@ -231,8 +248,15 @@ class Tickets extends Component {
             </select>
         </label>
         <button onClick={this.handleAddPart}>Add Part</button>
-        <p> Notes : {this.state.selectedTicket.notes}</p>
-        <button>TODO Add Note </button>
+        <p> Notes : </p>
+          {this.state.selectedTicket.notes.map((note, index) =>
+            <p key={index}> {note.body} - Posted on {note.date.toString()}</p>
+          )}
+        <label>
+          Note
+            <input type="text" name="note" value={this.state.tempNote} onChange={this.handleNoteChange}/>
+        </label>
+        <button onClick={this.addNoteButton}> Add Note </button> <br />
         <button onClick={this.saveTicketButton}> Save </button>
 
         </div>);
