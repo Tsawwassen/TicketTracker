@@ -22,7 +22,7 @@ class Tickets extends Component {
           createDate: "",
           editDate: "",
           closedDate: "",
-          partsList: [{sku: ""}],
+          partsList: [],
           notes: [ {body: "", date: ""}]
       },
       tempTicket: {
@@ -37,7 +37,8 @@ class Tickets extends Component {
       },
       storesList: [],
       partsList: [],
-      ticketList: []
+      ticketList: [],
+      selectedPart: ""
     }
     this.handleCreateButton = this.handleCreateButton.bind(this);
     this.handleSelectButton = this.handleSelectButton.bind(this);
@@ -48,6 +49,10 @@ class Tickets extends Component {
     this.handleFormChange = this.handleFormChange.bind(this);
 
     this.handleSelectedTicket = this.handleSelectedTicket.bind(this);
+
+    this.handleSelectedPart = this.handleSelectedPart.bind(this);
+    this.handleAddPart = this.handleAddPart.bind(this);
+    this.saveTicketButton = this.saveTicketButton.bind(this);
   }
 
     componentDidMount(){
@@ -99,7 +104,9 @@ class Tickets extends Component {
   }
 
   handleCreateButton(event){
+
     this.setState({view: "create"});
+
   }
 
   handleCreateTicket(event){
@@ -122,11 +129,40 @@ class Tickets extends Component {
         .then(ticket => {
           this.setState({selectedTicket: ticket.data});
           this.setState({view: "selected"});
-          //console.log(ticket.data);
     });
 
 
     event.preventDefault();
+  }
+
+  handleSelectedPart(event){
+    this.setState({selectedPart: event.target.value});
+  }
+
+  handleAddPart(event){
+    let tempTicket = this.state.selectedTicket;
+    tempTicket.partsList.push( this.state.selectedPart);
+    this.setState({selectedTicket: tempTicket});
+  }
+
+  saveTicketButton(event){
+
+    let ticketToUpdate = this.state.selectedTicket;
+
+    ticketToUpdate.editDate = new Date();
+
+    const requestOptions = {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(ticketToUpdate)
+    };
+
+    fetch('/ticket', requestOptions)
+    .then(response => response.json())
+    .then(ticket => {
+      this.setState({selectedTicket: ticket.data});
+    });
+
   }
 
   render () {
@@ -181,8 +217,23 @@ class Tickets extends Component {
         <p> Create Date : {this.state.selectedTicket.createDate}</p>
         <p> Edit Date : {this.state.selectedTicket.editDate}</p>
         <p> Closed Date : {this.state.selectedTicket.closedDate}</p>
-        <p> Parts List : {this.state.selectedTicket.partsList}</p>
+        <p> Parts List : </p>
+        {this.state.selectedTicket.partsList.map((part, index) =>
+            <p key={index}>{part}</p>
+          )}
+        
+        <label >
+          Select a Part to add
+            <select onChange={this.handleSelectedPart}>
+              {this.state.partsList.map( part => 
+                <option key={part._id} value={part.sku}>{part.sku}</option>
+              )}
+            </select>
+        </label>
+        <button onClick={this.handleAddPart}>Add Part</button>
         <p> Notes : {this.state.selectedTicket.notes}</p>
+        <button>TODO Add Note </button>
+        <button onClick={this.saveTicketButton}> Save </button>
 
         </div>);
     }
